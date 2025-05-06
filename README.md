@@ -37,7 +37,10 @@ MEMORY_GB=                           # Memory in GB (for flexible shapes)
 IMAGE_OCID=""                        # OCID of the image to boot from
 SUBNET_OCID=""                       # OCID of the subnet to attach the VNIC
 SSH_KEY=""                           # Your SSH public key (one-line string)
-RETRY_INTERVAL=60                    # Seconds to wait before retrying
+BASE_INTERVAL=60       		     # starting retry interval
+MAX_INTERVAL=300       		     # maximum interval after back-off
+BACKOFF_FACTOR=2       		     # multiply interval by this on each retry
+JITTER_PERCENT=10      		     # ±% jitter to spread out retries
 ```
 
 ## 4. Running the script
