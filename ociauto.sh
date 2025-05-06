@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 #
-# ociauto.sh — Retry-launch an OCI compute instance with exponential backoff + jitter
-# Live countdown and on-screen error only (no Bash debug trace)
+# ociauto.sh — Retry-launch an OCI compute instance with exponential backoff + jitter,
+# live countdown and on-screen error only, with periodic session-token refresh
 
-set -uo pipefail   # strict mode, but no -x
+set -uo pipefail   # strict mode, but no -e so we handle failures manually
 
 # === Load .env Variables ===
 if [[ -f .env ]]; then
@@ -44,10 +44,17 @@ fi
 # === Retry Loop ===
 while true; do
   rotate_error_log
+
+  # Refresh session token if using security_token auth
+  if [[ "${OCI_CLI_AUTH:-}" == "security_token" ]]; then
+    oci session refresh --profile "${OCI_CLI_PROFILE}" >/dev/null 2>&1 || {
+      echo "WARNING: failed to refresh OCI session—authentication may expire."
+    }
+  fi
+
   echo "[$(date '+%H:%M:%S')] Launch attempt…"
   log_message "$SUCCESS_LOG" "Attempting to launch instance…"
 
-  # no --debug, no set -x
   output=$(oci compute instance launch \
     --compartment-id            "${COMPARTMENT_OCID}" \
     --availability-domain       "${AVAILABILITY_DOMAIN}" \
@@ -91,3 +98,5 @@ while true; do
   interval=$(( interval * factor ))
   (( interval > max_interval )) && interval=$max_interval
 done
+
+exit 0
