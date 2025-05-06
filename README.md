@@ -1,15 +1,30 @@
 ## Overview
 
 This repository contains a Bash script (`ociauto.sh`) that repeatedly attempts to launch an Oracle Cloud Infrastructure (OCI) Compute instance until it succeeds. All configuration values—OCIDs, shapes, SSH key, etc.—are provided via a `.env` file, which you populate from the included `.env.example`. This README shows you how to:
-
-1. Copy and populate `.env` from `.env.example`  
-2. Install the OCI Command Line Interface (CLI)  
-3. Authenticate the CLI  
+1. Install the OCI Command Line Interface (CLI)  
+2. Authenticate the CLI  
+3. Copy and populate `.env` from `.env.example`  
 4. Run the retry‐launch script (`ociauto.sh`)  
 
 ---
 
-## 1. `.env.example`
+## 1. Installing the OCI CLI
+- Installer script (Unix/Linux/macOS)
+```bash
+bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"
+```
+- pip
+```bash
+pip install oci-cli
+```
+
+## 2. Authenticating the CLI
+```bash
+oci setup config
+oci session authenticate
+```
+
+## 3. `.env.example`
 
 ```bash
 # Copy this file to .env and fill in each value:
@@ -25,49 +40,7 @@ SSH_KEY=""                           # Your SSH public key (one-line string)
 RETRY_INTERVAL=60                    # Seconds to wait before retrying
 ```
 
-## 2. Finding & Populating .env Values
-- COMPARTMENT_OCID
-1. Console → Identity & Security → Compartments
-2. Click your target compartment → copy its OCID
-- AVAILABILITY_DOMAIN
-```bash
-oci iam availability-domain list
-```
-- SHAPE
-```bash
-oci compute shape list --compartment-id $COMPARTMENT_OCID
-```
-- OCPUS & MEMORY_GB
-For flexible shapes, set CPU and RAM within the allowed range for that shape.
-- IMAGE_OCID
-Copy the OCID of your desired image.
-```bash
-oci compute image list --compartment-id $COMPARTMENT_OCID --all
-```
-- SUBNET_OCID
-Console → Networking → Virtual Cloud Networks → select your VCN → select subnet → copy OCID.
-- SSH_KEY
-```bash
-ssh-keygen -t ed25519 -C "you@example.com"
-cat ~/.ssh/id_ed25519.pub
-```
-## 3. Installing the OCI CLI
-- Installer script (Unix/Linux/macOS)
-```bash
-bash -c "$(curl -L https://raw.githubusercontent.com/oracle/oci-cli/master/scripts/install/install.sh)"
-```
-- pip
-```bash
-pip install oci-cli
-```
-
-## 4. Authenticating the CLI
-```bash
-oci setup config
-oci session authenticate
-```
-
-## 5. Running the script
+## 4. Running the script
 ```bash
 chmod +x ociauto.sh
 ./ociauto.sh
