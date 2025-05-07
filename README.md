@@ -22,6 +22,7 @@ pip install oci-cli
 ### 1. Generate an API Signing Key
 ```bash
 oci setup config
+oci session authenticate
 ```
 ### 2. Upload Your Public Key
 1. Sign in to the OCI Console.
@@ -29,7 +30,7 @@ oci setup config
 3. Click Add API Key, choose Upload Public Key File or Paste Public Key, then click Add.
 ### 3. Environment Variables & Profiles
 ```bash
-export OCI_CLI_PROFILE="<PROFILE>" 		# name of your profile
+export OCI_CLI_PROFILE="<PROFILE>" 		    # name of your session profile
 export OCI_CLI_CONFIG_FILE="~/.oci/config"	# path to your config
 export OCI_CLI_AUTH="security_token"   		# use the session token for auth
 ```
@@ -96,3 +97,4 @@ systemctl --user daemon-reload
 systemctl --user restart ociauto.service
 journalctl --user -u ociauto.service -f
 ```
+
