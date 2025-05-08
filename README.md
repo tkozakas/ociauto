@@ -69,11 +69,6 @@ WorkingDirectory=/home/YOUR_USER/PATH/TO/OCIAUTO/ociauto
 # Make sure systemd sees your oci binary
 Environment=PATH=/home/YOUR_USER/bin:/usr/local/bin:/usr/bin:/bin
 
-# Tell OCI CLI to use your session token
-Environment=OCI_CLI_AUTH=security_token
-Environment=OCI_CLI_PROFILE=tomas
-Environment=OCI_CLI_CONFIG_FILE=/home/tom/.oci/config
-
 # DBus for desktop notification
 Environment=DISPLAY=:0
 Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus
@@ -82,8 +77,6 @@ ExecStart=/home/YOUR_USER/PATH/TO/OCIAUTO/ociauto/ociauto.sh
 ExecStartPost=/usr/bin/notify-send "OCI Launched" "Your instance is up!"
 Restart=on-failure
 RestartSec=10
-
-
 ```
 3. After saving, reload and restart:
 ```bash
