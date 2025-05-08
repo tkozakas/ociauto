@@ -22,18 +22,12 @@ pip install oci-cli
 ### 1. Generate an API Signing Key
 ```bash
 oci setup config
-oci session authenticate
 ```
+This writes a profile named DEFAULT in ~/.oci/config that points to your private key 
 ### 2. Upload Your Public Key
 1. Sign in to the OCI Console.
 2. Navigate to Identity & Security → Users → [Your User] → API Keys.
 3. Click Add API Key, choose Upload Public Key File or Paste Public Key, then click Add.
-### 3. Environment Variables & Profiles
-```bash
-export OCI_CLI_PROFILE="<PROFILE>" 		    # name of your session profile
-export OCI_CLI_CONFIG_FILE="~/.oci/config"	# path to your config
-export OCI_CLI_AUTH="security_token"   		# use the session token for auth
-```
 
 ## 3. `.env.example`
 
@@ -47,11 +41,11 @@ OCPUS=                               # Number of OCPUs (for flexible shapes)
 MEMORY_GB=                           # Memory in GB (for flexible shapes)
 IMAGE_OCID=""                        # OCID of the image to boot from
 SUBNET_OCID=""                       # OCID of the subnet to attach the VNIC
-SSH_KEYS_FILE=""                     # Your SSH public key (one-line string)
 BASE_INTERVAL=60       		     # starting retry interval
 MAX_INTERVAL=300       		     # maximum interval after back-off
 BACKOFF_FACTOR=2       		     # multiply interval by this on each retry
 JITTER_PERCENT=10      		     # ±% jitter to spread out retries
+OCI_CLI_PROFILE="DEFAULT"
 ```
 
 ## 4. Running the script
