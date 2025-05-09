@@ -81,7 +81,8 @@ RestartSec=10
 3. After saving, reload and restart:
 ```bash
 systemctl --user daemon-reload
-systemctl --user restart ociauto.service
+systemctl --user start ociauto.service
+systemctl --user enable ociauto.service
 journalctl --user -u ociauto.service -f
 ```
 
